@@ -1,0 +1,151 @@
+{\rtf1\ansi\ansicpg932\cocoartf1671\cocoasubrtf200
+{\fonttbl\f0\fswiss\fcharset0 Helvetica-Bold;\f1\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\qc\partightenfactor0
+
+\f0\b\fs24 \cf0 Test Results\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f1\b0 \cf0 \
+\ul Test Case 1:\ulnone \
+M:\
+1 2 3 4\
+5 6 7 8\
+4 3 2 1 \
+8 7 6 5\
+\
+N:\
+1 3 5 7\
+2 4 6 8\
+7 3 5 7\
+8 6 4 2\
+\
+Number of Processes: 1\
+\
+\ul Code output:\ulnone \
+Memory attached at 6642000\
+Input number of desired processes: 1\
+\
+Elapsed Time: 1589 micro sec for 1 processes\
+\
+Matrix M: \
+1 2 3 4 \
+5 6 7 8 \
+4 3 2 1 \
+8 7 6 5 \
+\
+Matrix N: \
+1 3 5 7 \
+2 4 6 8 \
+7 3 5 7 \
+8 6 4 2 \
+\
+Matrix Q: \
+58 44 48 52 \
+130 108 128 148 \
+32 36 52 68 \
+104 100 132 164 \
+\
+Resetting Q in shared memory struct... \
+----- Process Complete ------ \
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf0 \ul \ulc0 Test Case 2:\ulnone \
+M:\
+1 2 3 4\
+5 6 7 8\
+4 3 2 1 \
+8 7 6 5\
+\
+N:\
+1 3 5 7\
+2 4 6 8\
+7 3 5 7\
+8 6 4 2\
+\
+Number of Processes: 2\
+\
+\ul Code output:\ulnone \
+Memory attached at DA8D000\
+Input number of desired processes: 2\
+Child Process: working with row 0...\
+Child Process: working with row 1...\
+Child Process: working with row 2...\
+Child Process: working with row 3...\
+\
+Elapsed Time: 2357 micro sec for 2 processes\
+\
+Matrix M: \
+1 2 3 4 \
+5 6 7 8 \
+4 3 2 1 \
+8 7 6 5 \
+\
+Matrix N: \
+1 3 5 7 \
+2 4 6 8 \
+7 3 5 7 \
+8 6 4 2 \
+\
+Matrix Q: \
+58 44 48 52 \
+130 108 128 148 \
+32 36 52 68 \
+104 100 132 164 \
+\
+Resetting Q in shared memory struct... \
+----- Process Complete ------\
+\
+\ul Test Case 3:\ulnone \
+M:\
+1 2 3 4\
+5 6 7 8\
+4 3 2 1 \
+8 7 6 5\
+\
+N:\
+1 3 5 7\
+2 4 6 8\
+7 3 5 7\
+8 6 4 2\
+\
+Number of Processes: 4\
+\
+\ul Code output:\ulnone \
+Memory attached at B155000\
+Input number of desired processes: 4\
+Child Process: working with row 0...\
+Child Process: working with row 1...\
+Child Process: working with row 2...\
+Child Process: working with row 3...\
+\
+Elapsed Time: 3599 micro sec for 4 processes\
+\
+Matrix M: \
+1 2 3 4 \
+5 6 7 8 \
+4 3 2 1 \
+8 7 6 5 \
+\
+Matrix N: \
+1 3 5 7 \
+2 4 6 8 \
+7 3 5 7 \
+8 6 4 2 \
+\
+Matrix Q: \
+58 44 48 52 \
+130 108 128 148 \
+32 36 52 68 \
+104 100 132 164 \
+\
+Resetting Q in shared memory struct... \
+----- Process Complete ------ \
+\
+
+\f0\b Discussion of Results:\
+
+\f1\b0 Intuitively, the time it take to divide the matrix work by more processes should be less than the time it takes one process to compute the entire matrix. This does not support the results. In fact the opposite is true; the more processes are involved the slower the computation. This can be explained by the base time a fork() instruction takes. The time it takes to execute fork() is large enough to make the computation time of each compute_row() method negligible. As a result, it is more efficient for the computation sizes we are working with to use a single process. However I presume for large enough computations the base execution time of fork() would eventually become the negligible factor and the performance increase can be realized. \
+}

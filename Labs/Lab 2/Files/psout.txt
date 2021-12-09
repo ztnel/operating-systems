@@ -1,0 +1,3 @@
+  PID TTY           TIME CMD
+12852 ttys000    0:00.18 -bash
+ 9423 ttys001    0:00.04 /bin/bash -l

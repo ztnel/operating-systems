@@ -1,0 +1,26 @@
+Algorithm Description
+-----------------------------------------------------------------------------
+
+	4 processes are responsible for swapping 2 elements in a 5 element long shared memory matrix concurrently. The challenge is ensuring the processes do not access the same element in shared memory in parallel. This is shown in FIG 1:
+
+			[P1]  [P2]  [P3]  [P4]
+			/  \  /  \  /  \  /  \		FIG 1
+		       /    \/    \/    \/    \ 
+		     {M0}  {M1}  {M2}  {M3}  {M4}
+   
+
+	The quick solution is to implement a blocking protocol whenever any process requires access to the shared memory (performing a swap()). The problem is this solution is not truly concurrent, as each process is blocked from performing concurrent operations in shared memory. For example it's possible for process 1 (P1) to execute swap() concurrently with P3 or P4 because they do not share the same elements in shared memory. However P2 and P3 cannot operate concurrently as they access the same element in shared memory. This will require synchronization. In total we have 2 cases to consider:
+	
+	1. Process request requires synchronization
+	2. Process request can be executed concurrently
+
+	A solution is to use a flag register in shared memory that can indicate which processes are accessing shared memory and which are not. The flag register has 4 elements to be represented by the 4 processes executing concurrently. If a process executes swap() it will enable its corresponding element in the flag register to 1. When the process is finished executing swap() it will clear its corresponding flag register bit. We want to have each process check the real time output of these flags in order to determine if an adjacent process is performing a swap(). This is visually depicted in FIG 2:
+
+	Flag Register:	 [0]   [1]   [0]   [1]
+			  |	|     |     |
+			[P1]  [P2]  [P3]  [P4]
+			/  \  /  \  /  \  /  \		FIG 2
+		       /    \/    \/    \/    \ 
+		     {M0}  {M1}  {M2}  {M3}  {M4}
+
+	We can implement a synchronize() method that checks to see if an adjacent process is accessing swap(). This can be done by checking the flag register and ensuring that an adjacent element is not enabled to 1. If it does not detect that synchronization is required it returns false and the process will simply perform the swap(). Otherwise a semaphore variable will be used by the thread and swap() will execute under thread blocking protocols. This allows us to satisfy both cases for process execution and thus solves the problem.

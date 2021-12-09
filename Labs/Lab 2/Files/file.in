@@ -1,0 +1,4 @@
+  PID TTY           TIME CMD
+ 9423 ttys001    0:00.04 /bin/bash -l
+12852 ttys000    0:00.24 -bash
+12914 ttys000    0:00.01 sort
